@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Imprimir
         env:
-          MI_VARIABLE: "Alguien ha hecho un push"
+          MI_VARIABLE: "Alguien ha hecho un push en main"
         run: |
           echo $MI_VARIABLE
       
