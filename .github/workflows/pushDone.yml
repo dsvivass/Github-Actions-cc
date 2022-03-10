@@ -1,0 +1,20 @@
+name: Push Done
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs: 
+  pushDone:
+    runs-on: ubuntu-latest
+    name: push done
+    steps:
+      - name: Imprimir
+        env:
+          MI_VARIABLE: "Alguien ha hecho un push"
+        run: |
+          echo $MI_VARIABLE
+      
+
+
