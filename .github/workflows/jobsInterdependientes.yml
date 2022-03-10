@@ -1,0 +1,28 @@
+name: Jobs interdependientes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  First-job:
+    name: Mi primer job
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+      - name: Imprimir
+        id: imprimir
+        env:
+          MI_VARIABLE: "Alguien ha hecho un push en main"
+        run: echo "::set-output name=respuesta::${MI_VARIABLE}"
+
+  Second-job:
+    needs: First-job
+    name: Mi segundo job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Imprimir
+        id: imprimir
+        run: echo ${{needs.First-job.outputs.salida}}
