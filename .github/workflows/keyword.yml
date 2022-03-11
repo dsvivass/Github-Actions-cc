@@ -47,9 +47,11 @@ jobs:
     needs: job1
     runs-on: ubuntu-latest
     steps:
+      - name: imprimir
+        run: echo "${{needs.job1.outputs.salida}}"
+
       - name: Mezcla HU** -> main 
         if: ${{needs.job1.outputs.salida == true}}
-
         uses: tukasz/direct-merge-action@master  
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
