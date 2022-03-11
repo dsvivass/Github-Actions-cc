@@ -51,7 +51,7 @@ jobs:
         run: echo "${{needs.job1.outputs.salida}}"
 
       - name: Mezcla HU** -> main 
-        if: ${{needs.job1.outputs.salida == true}}
+        if: ${{needs.job1.outputs.salida}}
         uses: tukasz/direct-merge-action@master  
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
