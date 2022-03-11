@@ -13,4 +13,4 @@ class MainTestCase(unittest.TestCase):
     
     def test_despedida(self):
         '''Test de prueba para despedida'''
-        self.assertEqual(main('despedir'), 'Adioss')
+        self.assertEqual(main('despedir'), 'Adios')
