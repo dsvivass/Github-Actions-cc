@@ -15,6 +15,3 @@ jobs:
           MI_VARIABLE: "Alguien ha hecho un push en main"
         run: |
           echo $MI_VARIABLE
-      
-
-
