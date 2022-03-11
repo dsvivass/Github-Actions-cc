@@ -9,22 +9,39 @@ jobs:
   job1:
     name: Pruebas
     runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
       - name: Checkout de repositorio
         uses: actions/checkout@v2
+
       - name: Configuracion de entorno de python
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
+
       - name: Instalacion de librerias y dependencias
         run : | 
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Correr pruebas
         run: python -m unittest discover -s tests -v
+
+      - name: Validar resultado con errores
+        if: ${{ failure()}}
+        env:
+          MENSAJE_ERROR: "Una o varias pruebas fallaron"
+        run: echo "::set-output name=respuesta::${MENSAJE_ERROR}"
+
+      - name: Validar resultado sin errores
+        if: ${{ success()}}
+        env:
+          MENSAJE_EXITO: "Todas las pruebas pasaron"
+        run: echo "::set-output name=respuesta::${MENSAJE_EXITO}"
+
       - name: Cálculo de cobertura
         id: cubrimiento
         run : |
           coverage run -m unittest discover -s tests -v
           coverage report -m
-          coverage html
