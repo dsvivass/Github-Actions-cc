@@ -35,6 +35,7 @@ jobs:
 
     - name: automerge
       if: ${{ contains(github.event.head_commit.message, 'MEZCLAR_RAMA') }}
+      run: echo "Mezclando rama"
       
   job2:
     name: Merge
