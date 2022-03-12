@@ -46,10 +46,9 @@ jobs:
     name: crear branch release
     needs: job1
     runs-on: ubuntu-latest
-    outputs:
-      salida: ${{ steps.automerge.outputs.respuesta }}
     steps:
       - name: Crear rama release
+        uses: actions/checkout@v2
         run: | 
           git checkout -b release 
           git push -f -u origin release 
