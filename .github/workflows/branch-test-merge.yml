@@ -47,8 +47,10 @@ jobs:
     needs: job1
     runs-on: ubuntu-latest
     steps:
-      - name: Crear rama release
+      - name: Checkout de repositorio
         uses: actions/checkout@v2
+        
+      - name: Crear rama release
         run: | 
           git checkout -b release 
           git push -f -u origin release 
