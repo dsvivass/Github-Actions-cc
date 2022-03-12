@@ -35,7 +35,7 @@ jobs:
           coverage report -m
 
   job2:
-    name: Pruebas
+    name: Verificacion de palabra clave
     needs: job1
     runs-on: ubuntu-latest
     steps:
