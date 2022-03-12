@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  job1:
+  job0:
     name: Pruebas
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +14,11 @@ jobs:
       if: ${{ !contains(github.event.head_commit.message, 'DESPLEGAR') }}
       uses: andymckay/cancel-action@0.2
 
+  job1:
+    name: Pruebas
+    runs-on: ubuntu-latest
+    needs: job0
+    steps:
     - name: Checkout de repositorio
       uses: actions/checkout@v2
 
