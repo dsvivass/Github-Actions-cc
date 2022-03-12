@@ -34,24 +34,15 @@ jobs:
       run: |
           coverage run -m unittest discover -s tests -v
           coverage report -m
-
-    - name: automerge
-      id: automerge
-      if: ${{ contains(github.event.head_commit.message, 'MEZCLAR_RAMA') }}
-      env:
-        RESULT: true
-      run: echo "::set-output name=respuesta::${RESULT}"
       
   job2:
     name: Merge
     needs: job1
     runs-on: ubuntu-latest
     steps:
-      - name: imprimir
-        run: echo "${{needs.job1.outputs.salida}}"
-
+    
       - name: Mezcla HU** -> main 
-        if: ${{needs.job1.outputs.salida}}
+        if: ${{ contains(github.event.head_commit.message, 'MEZCLAR_RAMA') }}
         uses: tukasz/direct-merge-action@master  
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
