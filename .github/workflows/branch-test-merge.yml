@@ -10,6 +10,10 @@ jobs:
     name: Pruebas
     runs-on: ubuntu-latest
     steps:
+    - name: Cancela el flujo si no encuentra DESPLEGAR como palabra clave
+      if: ${{ !contains(github.event.head_commit.message, 'DESPLEGAR') }}
+      uses: andymckay/cancel-action@0.2
+
     - name: Checkout de repositorio
       uses: actions/checkout@v2
 
@@ -41,9 +45,7 @@ jobs:
       salida: ${{ steps.automerge.outputs.respuesta }}
     steps:
       - name: Crear rama release
-        if: ${{ contains(github.event.head_commit.message, 'DESPLEGAR') }}
         run: | 
-          echo "::set-output name=respuesta::${RESULT}"
           git checkout -b release 
           git push -f -u origin release 
 
@@ -53,7 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout de repositorio
-      if: ${{needs.job2.outputs.salida}}
       uses: actions/checkout@v2
 
     - name: Configuración de entorno de python
@@ -79,14 +80,11 @@ jobs:
 
   job4:
     name: Merge a main
-    needs: 
-      - job2
-      - job3
+    needs: job3
     runs-on: ubuntu-latest
     steps:
     
       - name: Mezcla HU** -> main 
-        if: ${{needs.job2.outputs.salida}}
         uses: tukasz/direct-merge-action@master  
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
