@@ -9,8 +9,6 @@ jobs:
   job1:
     name: Pruebas
     runs-on: ubuntu-latest
-    outputs:
-      salida: ${{ steps.automerge.outputs.respuesta }}
     steps:
     - name: Checkout de repositorio
       uses: actions/checkout@v2
@@ -39,10 +37,13 @@ jobs:
     name: crear branch release
     needs: job1
     runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.automerge.outputs.respuesta }}
     steps:
       - name: Crear rama release
         if: ${{ contains(github.event.head_commit.message, 'DESPLEGAR') }}
         run: | 
+          echo "::set-output name=respuesta::${RESULT}"
           git checkout -b release 
           git push -f -u origin release 
 
@@ -52,6 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout de repositorio
+      if: ${{needs.job2.outputs.salida}}
       uses: actions/checkout@v2
 
     - name: Configuración de entorno de python
@@ -77,12 +79,14 @@ jobs:
 
   job4:
     name: Merge a main
-    needs: job3
+    needs: 
+      - job2
+      - job3
     runs-on: ubuntu-latest
     steps:
     
       - name: Mezcla HU** -> main 
-        if: ${{ contains(github.event.head_commit.message, 'MEZCLAR_RAMA') }}
+        if: ${{needs.job2.outputs.salida}}
         uses: tukasz/direct-merge-action@master  
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
